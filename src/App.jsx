@@ -8,7 +8,7 @@ function App() {
   );
 
   const handleChange = (e) => {
-    setTask({ id: tasks.length, taskTitle: e.target.value });
+    setTask({ id: tasks.length, taskTitle: e.target.value, isChecked: false });
   };
 
   const handleClick = () => {
@@ -20,6 +20,40 @@ function App() {
     setTask({ taskTitle: "" });
   };
 
+  const handleDelete = (id) => {
+    const updatedTasks = tasks.filter((item) => {
+      return item.id !== id;
+    });
+
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
+
+  const handleCheck = (id) => {
+    const updatedTasks = tasks.map((item) => {
+      if (item.id === id) {
+        return { ...item, isChecked: !item.isChecked };
+      }
+      return item;
+    });
+
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
+
+  const completedStyle = {
+    textDecoration: "line-through",
+    opacity: 0.7,
+    color: "#888",
+    fontStyle: "italic",
+  };
+
+  const activeStyle = {
+    textDecoration: "none",
+    opacity: 1,
+    color: "#000",
+  };
+
   return (
     <>
       <h1>Todo App</h1>
@@ -29,6 +63,7 @@ function App() {
           onChange={(e) => handleChange(e)}
           value={task.taskTitle}
           className="input-field"
+          placeholder="Add a task"
         />
         <button className="btn btn-add" onClick={handleClick}>
           Add
@@ -42,11 +77,22 @@ function App() {
             return (
               <div className="task" key={item.id}>
                 <div className="task-details">
-                  <input type="checkbox" name="" id="" />
-                  <p>{item.taskTitle}</p>
+                  <input
+                    type="checkbox"
+                    checked={item.isChecked || false}
+                    onChange={() => handleCheck(item.id)}
+                  />
+                  <p style={item.isChecked ? completedStyle : activeStyle}>
+                    {item.taskTitle}
+                  </p>
                 </div>
 
-                <button className="btn btn-delete">Delete</button>
+                <button
+                  className="btn btn-delete"
+                  onClick={() => handleDelete(item.id)}
+                >
+                  Delete
+                </button>
               </div>
             );
           })
