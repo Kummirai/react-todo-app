@@ -12,9 +12,12 @@ function App() {
   };
 
   const handleClick = () => {
+    if (task.taskTitle === "") {
+      return;
+    }
     setTasks([...tasks, task]);
     localStorage.setItem("tasks", JSON.stringify([...tasks, task]));
-    setTask.taskTitle("");
+    setTask({ taskTitle: "" });
   };
 
   return (
