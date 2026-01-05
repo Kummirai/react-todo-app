@@ -2,16 +2,16 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [task, setTask] = useState();
+  const [task, setTask] = useState({});
   const [tasks, setTasks] = useState([]);
 
   const handleChange = (e) => {
-    setTask(e.target.value);
+    setTask({ id: task.length, taskTitle: e.target.value });
   };
 
   const handleClick = () => {
-    tasks.push(task);
-    setTask("");
+    setTasks([...tasks, task]);
+    setTask.taskTitle("");
   };
 
   return (
@@ -21,7 +21,7 @@ function App() {
         <input
           type="text"
           onChange={(e) => handleChange(e)}
-          value={task}
+          value={task.taskTitle}
           className="input-field"
         />
         <button className="btn btn-add" onClick={handleClick}>
@@ -29,11 +29,18 @@ function App() {
         </button>
       </div>
       <div className="tasks-container">
-        <div className="task">
-          <input type="checkbox" name="" id="" />
-          <p>{task}</p>
-          <button className="btn btn-delete">Delete</button>
-        </div>
+        {tasks?.map((item) => {
+          return (
+            <div className="task">
+              <div className="task-details">
+                <input type="checkbox" name="" id="" />
+                <p>{item.taskTitle}</p>
+              </div>
+
+              <button className="btn btn-delete">Delete</button>
+            </div>
+          );
+        })}
       </div>
     </>
   );
