@@ -3,14 +3,17 @@ import "./App.css";
 
 function App() {
   const [task, setTask] = useState({});
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
 
   const handleChange = (e) => {
-    setTask({ id: task.length, taskTitle: e.target.value });
+    setTask({ id: tasks.length, taskTitle: e.target.value });
   };
 
   const handleClick = () => {
     setTasks([...tasks, task]);
+    localStorage.setItem("tasks", JSON.stringify([...tasks, task]));
     setTask.taskTitle("");
   };
 
@@ -29,18 +32,22 @@ function App() {
         </button>
       </div>
       <div className="tasks-container">
-        {tasks?.map((item) => {
-          return (
-            <div className="task">
-              <div className="task-details">
-                <input type="checkbox" name="" id="" />
-                <p>{item.taskTitle}</p>
-              </div>
+        {tasks.length === 0 ? (
+          <p className="no-tasks">You do not have any tasks yet! </p>
+        ) : (
+          tasks?.map((item) => {
+            return (
+              <div className="task" key={item.id}>
+                <div className="task-details">
+                  <input type="checkbox" name="" id="" />
+                  <p>{item.taskTitle}</p>
+                </div>
 
-              <button className="btn btn-delete">Delete</button>
-            </div>
-          );
-        })}
+                <button className="btn btn-delete">Delete</button>
+              </div>
+            );
+          })
+        )}
       </div>
     </>
   );

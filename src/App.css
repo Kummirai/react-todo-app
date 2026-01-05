@@ -34,6 +34,7 @@
 
 .btn-delete {
   background-color: rgb(233, 22, 7);
+  font-size: 14px;
 }
 
 .btn-add:hover {
@@ -62,4 +63,10 @@
 .task-details {
   display: flex;
   align-items: center;
+}
+
+.no-tasks {
+  font-weight: 400;
+  color: rgb(138, 138, 138);
+  font-size: 18px;
 }
